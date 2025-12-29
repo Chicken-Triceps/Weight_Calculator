@@ -1,0 +1,194 @@
+/* 1. 기본 스타일 및 레이아웃 */
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #222; /* 어두운 배경 */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    margin: 0;
+}
+
+h1 { margin-bottom: 10px; }
+
+/* 총 무게 텍스트 */
+#total-weight {
+    font-size: 40px;
+    color: #ffcc00; /* 강조색 (노랑) */
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* 2. 시뮬레이터 영역 (핵심 배치) */
+.simulator-area {
+    position: relative; /* 자식 요소들의 배치 기준점 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 1000px;
+    height: 300px; /* 바벨과 원판이 들어갈 높이 */
+    background: #333; /* 시뮬레이터 배경 */
+    border-radius: 15px;
+    margin-bottom: 30px;
+    overflow: hidden; /* 영역 밖으로 나가는 요소 숨김 */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+/* 바벨 이미지 (배경처럼 뒤에 깔림) */
+.bar-img {
+    position: absolute;
+    width: 90%; /* 적절한 너비 조절 */
+    height: auto;
+    z-index: 1; /* 가장 뒤 */
+}
+
+/* 원판 컨테이너 (바벨 위에 겹쳐짐) */
+.plate-container {
+    position: absolute;
+    width: 85%; /* 바벨의 슬리브 위치에 맞게 조절 */
+    height: 100%;
+    display: flex;
+    justify-content: space-between; /* 양쪽 끝으로 벌림 */
+    align-items: center;
+    z-index: 2; /* 바벨 위 */
+    pointer-events: none; /* 클릭이 원판까지 통과되도록 설정 */
+}
+
+/* 슬리브 (원판이 실제로 쌓이는 영역) */
+.sleeves {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    pointer-events: auto; /* 원판 클릭은 가능하게 설정 */
+}
+
+/* 왼쪽 슬리브: 오른쪽 정렬 + 역순 배치 (안쪽부터 쌓임) */
+.sleeve-left {
+    flex-direction: row-reverse; 
+    width: 19%;
+    justify-content: flex-start;
+    padding-right: 20px; /* 바벨 손잡이와의 간격 */
+}
+
+/* 오른쪽 슬리브: 왼쪽 정렬 + 정순 배치 */
+.sleeve-right {
+    flex-direction: row;
+    width: 19%;
+    justify-content: flex-start;
+    padding-left: 20px;
+}
+
+/* 동적으로 생성될 원판 이미지 스타일 */
+.plate-img {
+    height: 70%; /* 슬리브 높이 대비 크기 */
+    width: auto;
+    margin: 0 0px; /* 원판 간 간격 */
+    cursor: pointer; /* 클릭 가능 표시 */
+    transition: transform 0.1s, filter 0.1s;
+    filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.5)); /* 그림자 효과 */
+}
+
+/* [추가] 5kg 원판 전용 스타일 (50% 축소) */
+/* 점(.)이 클래스명에 들어가면 안 되므로 JS에서 처리가 필요하지만, 
+   정수형인 5kg는 'p-5'로 처리하면 됩니다. */
+.p-5 {
+    height: 35% !important; /* 70%의 절반 */
+}
+
+/* [추가] 제거(Undo) 버튼 스타일 */
+.undo-btn {
+    background-color: #d3870c83; /* 주황색 */
+    font-size: 20px;
+    padding: 8px 16px; /* 크기 조절 */
+}
+.undo-btn:hover { background-color: #e67e22; }
+
+/* 원판 마우스 오버 효과 */
+.plate-img:hover {
+    transform: scale(1.1); /* 살짝 커짐 */
+    filter: brightness(1.2) drop-shadow(3px 3px 5px rgba(0,0,0,0.7)); /* 밝아짐 */
+}
+
+/* 3. 컨트롤 패널 스타일 */
+.controls {
+    text-align: center;
+    background: #444;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+select {
+    padding: 10px 15px;
+    font-size: 16px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: none;
+    background: #555;
+    color: white;
+    cursor: pointer;
+}
+
+.btn-group {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+button {
+    padding: 12px 24px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    color: white;
+    background-color: #666;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+button:hover {
+    background-color: #888;
+    transform: translateY(-2px); /* 위로 2px 이동 */
+    box-shadow: 0 6px 8px rgba(0,0,0,0.4); /* 그림자 진해짐 */
+}
+
+button:active {
+    transform: translateY(0); /* 클릭 시 원위치 */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* 각 원판 버튼 색상 포인트 (이미지 색상 참고) */
+.plate-20-btn { border-bottom: 4px solid #007aff; } /* 파랑 */
+.plate-15-btn { border-bottom: 4px solid #ffcc00; } /* 노랑 */
+.plate-10-btn { border-bottom: 4px solid #34c759; } /* 초록 */
+.plate-5-btn  { border-bottom: 4px solid #ffffff;} /* 흰색 */
+
+.reset-btn {
+    background-color: #ff3a303f; /* 빨강 */
+    width: 100%;
+    max-width: 200px;
+}
+.reset-btn:hover { background-color: #ff6b64; }
+
+.action-btn {
+    background-color: transparent; /* 배경 투명 */
+    border: 2px solid #777; /* 테두리 추가 */
+    color: #aaa; /* 글자색 회색 */
+    margin: 0 5px; /* 버튼 사이 간격 */
+    font-size: 16px;      /* 글자 크기 */
+    font-weight: 700;     /* 글자 굵기 (Bold) */
+    min-width: 100px; /* 최소 너비 확보 */
+}
+
+/* 마우스 올렸을 때 (애니메이션 + 밝아짐) */
+.action-btn:hover {
+    background-color: #555; /* 배경 약간 밝게 */
+    border-color: #fff; /* 테두리 흰색 */
+    color: #fff; /* 글자 흰색 */
+    transform: translateY(-2px); /* 둥실 떠오르는 애니메이션 */
+}
