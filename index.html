@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weight Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Weight Calculator</h1>
+    <div id="total-weight">20 kg</div>
+
+    <div class="simulator-area">
+        <img src="assets/bar_20.png" id="bar-img" class="bar-img" alt="Barbell">
+        
+        <div class="plate-container">
+            <div class="sleeves sleeve-left" id="sleeve-left"></div>
+            <div class="sleeves sleeve-right" id="sleeve-right"></div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <select id="bar-select">
+            <option value="20">Standard Bar (20kg)</option>
+            <option value="15">Women's Bar (15kg)</option>
+            <option value="10">Technique Bar (10kg)</option>
+        </select>
+
+        <div class="btn-group">
+            <button class="add-btn" data-weight="25">25kg</button>
+            <button class="add-btn" data-weight="20">20kg</button>
+            <button class="add-btn" data-weight="15">15kg</button>
+            <button class="add-btn" data-weight="10">10kg</button>
+            <button class="add-btn" data-weight="5">5kg</button>
+            <button class="add-btn" data-weight="2.5">2.5kg</button>
+        </div>
+
+        <button class="reset-btn" id="reset-btn">초기화 (Reset)</button>
+    </div>
+
+    <script src="script.js" defer></script>
+</body>
+</html>
